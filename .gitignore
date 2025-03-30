@@ -9,6 +9,5 @@ __pycache__/
 *.tmp
 *.db
 *.sqlite
-*.png
 .DS_Store
 Thumbs.db
