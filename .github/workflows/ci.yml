@@ -25,15 +25,15 @@ jobs:
           pip install -r requirements.txt
           pip install pytest pytest-html
 
-      - name: Start Selenium Grid (docker-compose)
+      - name: Start Selenium Grid (docker compose)
         run: |
-          docker-compose -f docker-compose.yml up -d
+          docker compose -f docker-compose.yml up -d
           echo "Waiting for Selenium Grid to be ready..."
           sleep 20
 
       - name: Run Selenium UI Tests
         env:
-          SELENIUM_REMOTE_URL: http://localhost:4444
+          SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
         run: |
           pytest --html=reports/result.html --self-contained-html
 
@@ -43,4 +43,3 @@ jobs:
         with:
           name: html-report
           path: reports/
-          include-hidden-files: true
