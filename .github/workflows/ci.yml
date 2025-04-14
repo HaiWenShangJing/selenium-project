@@ -1,0 +1,42 @@
+name: Selenium UI Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      selenium-hub:
+        image: selenium/standalone-chrome:latest
+        ports:
+          - 4444:4444
+        options: >-
+          --health-cmd "curl -f http://localhost:4444/wd/hub/status || exit 1"
+          --health-interval 5s
+          --health-timeout 2s
+          --health-retries 20
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run tests
+        env:
+          SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
+        run: |
+          pytest
