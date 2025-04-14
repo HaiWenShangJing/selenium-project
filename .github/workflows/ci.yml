@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -29,7 +29,7 @@ jobs:
         run: |
           docker-compose -f docker-compose.yml up -d
           echo "Waiting for Selenium Grid to be ready..."
-          sleep 20  # 保守等待 Grid + 节点全部连接
+          sleep 20
 
       - name: Run Selenium UI Tests
         env:
@@ -39,7 +39,8 @@ jobs:
 
       - name: Upload HTML Report
         if: always()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: html-report
           path: reports/
+          include-hidden-files: true
